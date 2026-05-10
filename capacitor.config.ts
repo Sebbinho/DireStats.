@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.direstats.app',
-  appName: 'DireStats.',
+  appName: 'DireStats',
   webDir: 'dist'
 };
 
