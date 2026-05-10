@@ -156,21 +156,27 @@ const getStyles = (theme: ThemePalette): Record<string, CSSProperties> => ({
 
   catBadge: { 
     color: theme.accent, 
-    fontSize: '14px', 
+    fontSize: '13px', 
     fontWeight: 'bold', 
-    marginBottom: '0px', 
+    marginBottom: '-3px', 
     textAlign: 'left', 
     alignSelf: 'flex-start',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-  },
-  teams: { 
-    fontSize: '17px', 
-    fontWeight: '800', 
-    lineHeight: '1.2', 
-    wordBreak: 'break-word', 
-    textAlign: 'left', 
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', 
-    color: theme.text 
+    fontFamily: '"Roboto Condensed", "Arial Narrow", -apple-system, sans-serif',  },
+
+  teams: {
+    fontSize: '18px', // Leggermente più piccolo per salvaguardare lo spazio
+    fontWeight: '600', // Bello marcato (Bold)
+    lineHeight: '1.2',
+    textAlign: 'left',
+    // Usiamo Roboto Condensed (o il font di sistema compatto come Arial Narrow)
+    fontFamily: '"Roboto Condensed", "Arial Narrow", -apple-system, sans-serif',
+    color: theme.text,
+    textTransform: 'uppercase', // Maiuscolo sportivo
+    letterSpacing: '-0.3px', // Avvicina le lettere
+    whiteSpace: 'nowrap', // Impedisce che la singola squadra vada a capo su due righe
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '230px' // Limita la larghezza massima prima che scattino i tre puntini (...)
   },
   cardRight: { 
     textAlign: 'right', 
@@ -839,9 +845,108 @@ export function TabellaPartite() {
               </button>
             </div>
           </div>
+          {/* SEZIONE GESTIONE PARTITE CON ELIMINAZIONE SINGOLA */}
+      <div style={S.settingItem}>
+        <div style={S.settingLabel}>GESTIONE PARTITE ({partite.length})</div>
+        <div style={S.settingNote}>Scorri l'elenco e rimuovi singolarmente le partite inserite.</div>
+        
+        {partite.length === 0 ? (
+          <p style={{ color: themePalette.muted, fontSize: '13px', margin: '10px 0 0 0', textAlign: 'center' }}>
+            Nessuna partita registrata.
+          </p>
+        ) : (
+          /* Elenco scorrevole */
+          <div style={{ 
+            maxHeight: '350px', 
+            overflowY: 'auto', 
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px',
+            marginTop: '12px',
+            paddingRight: '4px'
+          }}>
+            {partite.map((p, index) => (
+              <div 
+                key={p.id || index} 
+                style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center', 
+                  padding: '10px 12px', 
+                  backgroundColor: themePalette.inputBg, 
+                  borderRadius: '10px',
+                  border: `1px solid ${themePalette.border}`,
+                  boxSizing: 'border-box'
+                }}
+              >
+                {/* Info partita */}
+                <div style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  justifyContent: 'center', 
+                  gap: '2px', 
+                  maxWidth: '70%', 
+                  textAlign: 'left' 
+                }}>
+                  <span style={{ 
+                    fontSize: '13px', 
+                    fontWeight: '700', 
+                    color: themePalette.text,
+                    fontFamily: '"Roboto Condensed", sans-serif',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    lineHeight: '1.2'
+                  }}>
+                    {p.squadra1} - {p.squadra2}
+                  </span>
+                  <span style={{ 
+                    fontSize: '11px', 
+                    color: themePalette.muted,
+                    lineHeight: '1.1'
+                  }}>
+                    {p.data} • {p.importo ? `${p.importo.toFixed(2)}€` : '0.00€'}
+                  </span>
+                </div>
+
+                {/* Bottone Elimina */}
+                <button 
+                  onClick={() => {
+                    if (window.confirm("Vuoi davvero eliminare questa partita?")) {
+                      const nuovePartite = partite.filter((_, idx) => idx !== index);
+                      setPartite(nuovePartite);
+                      localStorage.setItem('partite-arbitro-vfinal', JSON.stringify(nuovePartite));
+                    }
+                  }}
+                  style={{ 
+                    backgroundColor: 'rgba(239, 68, 68, 0.12)', 
+                    border: 'none', 
+                    borderRadius: '8px', 
+                    padding: '8px 12px', 
+                    cursor: 'pointer',
+                    color: '#ef4444',
+                    fontSize: '11px',
+                    fontWeight: '700',
+                    fontFamily: '"Roboto Condensed", sans-serif',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    lineHeight: '1',
+                    height: '30px'
+                  }}
+                >
+                  ELIMINA
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
         </div>
 
       </div>
+
+      
 
       {/* ================= TAB BAR BOTTOM (TELEGRAM STYLE) ================= */}
       <nav style={S.nav}>
