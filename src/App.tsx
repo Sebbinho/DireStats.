@@ -1,4 +1,4 @@
-import { TabellaPartite } from './components/TabellaPartite';
+import { TabellaPartite } from './components/TabellePartite';
 
 function App() {
   return (
