@@ -53,7 +53,6 @@ const themePalettes: Record<ThemeName, ThemePalette> = {
     overlay: 'rgba(0,0,0,0.65)',
     drawerBg: '#121212',
     navBg: '#121212',
-    navbar: '#292828',
     accent: '#67cf21',
     accentText: '#000000',
     accentSoft: '#d9f7d9',
@@ -263,9 +262,7 @@ nav: {
     right: '20px',
     width: 'auto', 
     height: '56px', 
-    backgroundColor: theme.navbar, 
-    // Ridotto il blur a 6px per eliminare l'effetto alone scuro sui bordi arrotondati
-    backdropFilter: 'blur(0px)', 
+    backgroundColor: '#292828',    backdropFilter: 'blur(0px)', 
     WebkitBackdropFilter: 'blur(6px)', 
     display: 'flex', 
     justifyContent: 'space-around', 
@@ -274,7 +271,7 @@ nav: {
     border: 'none', 
     boxSizing: 'border-box',
     // Ombra resa ultra-morbida e leggerissima per non creare aloni artificiali
-    boxShadow: theme.mode === 'dark' 
+    boxShadow: theme.accent === 'dark' 
       ? '0 4px 20px rgba(0, 0, 0, 0.4)' // Ombra scura ma compatta per il tema scuro
       : '0 4px 20px rgba(0, 0, 0, 0.06)', // Ombra leggerissima per il tema chiaro
     zIndex: 1000,
@@ -792,8 +789,8 @@ export function TabellaPartite() {
         <div style={S.tabContent}>
           <div style={S.header}>
             <h1 style={{ ...S.title, margin: 0, textAlign: 'center' }}>
-              Impostazioni<span style={{ color: themePalette.accent }}>.</span>
-            </h1>
+  Impostazioni<span style={{ color: themePalettes[theme].accent }}>.</span>
+</h1>
           </div>
           <p style={S.subtitle}>Gestione del database e personalizzazione</p>
 
@@ -814,11 +811,11 @@ export function TabellaPartite() {
               <div style={S.settingNote}>Carica un file CSV o incolla direttamente le righe dei dati nel campo di testo sottostante.</div>
               
               <input
-                type="file"
-                accept=".csv,.tsv,text/csv,text/tab-separated-values"
-                onChange={handleFileUpload}
-                style={{ color: themePalette.fileInputText, marginTop: '12px', display: 'block', fontSize: '14px' }}
-              />
+             type="file"
+             accept=".csv,.tsv,text/csv,text/tab-separated-values"
+             onChange={handleFileUpload}
+             style={{ color: themePalettes[theme].fileInputText, marginTop: '12px', display: 'block', fontSize: '14px' }}
+             />
 
               <textarea
                 style={S.rawJsonArea}
@@ -956,10 +953,10 @@ export function TabellaPartite() {
              ...S.iconWrapper, 
              ...(activeTab === 'partite' ? S.iconWrapperActive : {}) 
            }}>
-             <IconPartite color={activeTab === 'partite' ? themePalette.accentText : themePalette.muted} />
+             <IconPartite color={activeTab === 'partite' ? themePalettes[theme].accentText : themePalettes[theme].muted} />
              <span style={{ 
                ...S.navLabel, 
-               color: activeTab === 'partite' ? themePalette.accentText : themePalette.muted 
+               color: activeTab === 'partite' ? themePalettes[theme].accentText : themePalettes[theme].muted 
              }}>
                
              </span>
@@ -972,10 +969,10 @@ export function TabellaPartite() {
              ...S.iconWrapper, 
              ...(activeTab === 'aggiungi' ? S.iconWrapperActive : {}) 
            }}>
-             <IconAggiungi color={activeTab === 'aggiungi' ? themePalette.accentText : themePalette.muted} />
+             <IconAggiungi color={activeTab === 'aggiungi' ? themePalettes[theme].accentText : themePalettes[theme].muted} />
              <span style={{ 
                ...S.navLabel, 
-               color: activeTab === 'aggiungi' ? themePalette.accentText : themePalette.muted 
+               color: activeTab === 'aggiungi' ? themePalettes[theme].accentText : themePalettes[theme].muted 
              }}>
                
              </span>
@@ -988,10 +985,10 @@ export function TabellaPartite() {
              ...S.iconWrapper, 
              ...(activeTab === 'statistiche' ? S.iconWrapperActive : {}) 
            }}>
-             <IconGuadagni color={activeTab === 'statistiche' ? themePalette.accentText : themePalette.muted} />
+             <IconGuadagni color={activeTab === 'statistiche' ? themePalettes[theme].accentText : themePalettes[theme].muted} />
              <span style={{ 
                ...S.navLabel, 
-               color: activeTab === 'statistiche' ? themePalette.accentText : themePalette.muted 
+               color: activeTab === 'statistiche' ? themePalettes[theme].accentText : themePalettes[theme].muted 
              }}>
                
              </span>
@@ -1004,10 +1001,10 @@ export function TabellaPartite() {
              ...S.iconWrapper, 
              ...(activeTab === 'impostazioni' ? S.iconWrapperActive : {}) 
            }}>
-             <IconImpostazioni color={activeTab === 'impostazioni' ? themePalette.accentText : themePalette.muted} />
+             <IconImpostazioni color={activeTab === 'impostazioni' ? themePalettes[theme].accentText : themePalettes[theme].muted} />
              <span style={{ 
                ...S.navLabel, 
-               color: activeTab === 'impostazioni' ? themePalette.accentText : themePalette.muted 
+               color: activeTab === 'impostazioni' ? themePalettes[theme].accentText : themePalettes[theme].muted 
              }}>
                
              </span>
@@ -1058,26 +1055,26 @@ export function TabellaPartite() {
                 setSelectedPartita({ ...selectedPartita, percepito: !selectedPartita.percepito });
               }}
             >
-              <span style={{ color: themePalette.text, fontWeight: 'bold', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>Pagamento ricevuto</span>
-              <div style={{
-                width: '40px',
-                height: '22px',
-                borderRadius: '20px',
-                padding: '2px',
-                backgroundColor: selectedPartita.percepito ? themePalette.accent : themePalette.buttonSecondaryBg,
-                display: 'flex',
-                alignItems: 'center',
-                transition: '0.3s'
-              }}>
-                <div style={{
-                  width: '18px',
-                  height: '18px',
-                  backgroundColor: themePalette.surface,
-                  borderRadius: '50%',
-                  transition: '0.3s',
-                  transform: selectedPartita.percepito ? 'translateX(18px)' : 'translateX(0)'
-                }} />
-              </div>
+              <span style={{ color: themePalettes[theme].text, fontWeight: 'bold', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>Pagamento ricevuto</span>
+<div style={{
+  width: '40px',
+  height: '22px',
+  borderRadius: '20px',
+  padding: '2px',
+  backgroundColor: selectedPartita.percepito ? themePalettes[theme].accent : themePalettes[theme].buttonSecondaryBg,
+  display: 'flex',
+  alignItems: 'center',
+  transition: '0.3s'
+}}>
+  <div style={{
+    width: '18px',
+    height: '18px',
+    backgroundColor: themePalettes[theme].surface,
+    borderRadius: '50%',
+    transition: '0.3s',
+    transform: selectedPartita.percepito ? 'translateX(18px)' : 'translateX(0)'
+  }} />
+</div>
             </div>
             
             <button onClick={salvaPartita} style={S.btnSave}>Salva Modifiche</button>
